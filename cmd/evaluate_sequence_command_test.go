@@ -45,11 +45,16 @@ func TestCreateEvaluateSequenceCommand(t *testing.T) {
 func TestProcessExpression(t *testing.T) {
 	// Reset global variables
 	originalPrettyPrint := prettyPrint
-	defer func() { prettyPrint = originalPrettyPrint }()
+	originalSortKeys := sortKeys
+	defer func() {
+		prettyPrint = originalPrettyPrint
+		sortKeys = originalSortKeys
+	}()
 
 	tests := []struct {
 		name        string
 		prettyPrint bool
+		sortKeys    bool
 		expression  string
 		expected    string
 	}{
@@ -83,11 +88,31 @@ func TestProcessExpression(t *testing.T) {
 			expression:  ".items[] | select(.active == true)",
 			expected:    `.items[] | select(.active == true) | (... | (select(tag != "!!str"), select(tag == "!!str") | select(test("(?i)^(y|yes|n|no|on|off)$") | not))  ) style=""`,
 		},
+		{
+			name:       "empty expression with sort keys",
+			sortKeys:   true,
+			expression: "",
+			expected:   "sort_keys(..)",
+		},
+		{
+			name:       "simple expression with sort keys",
+			sortKeys:   true,
+			expression: ".a.b",
+			expected:   ".a.b | sort_keys(..)",
+		},
+		{
+			name:        "sort keys and pretty print",
+			prettyPrint: true,
+			sortKeys:    true,
+			expression:  ".a",
+			expected:    `.a | sort_keys(..) | (... | (select(tag != "!!str"), select(tag == "!!str") | select(test("(?i)^(y|yes|n|no|on|off)$") | not))  ) style=""`,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			prettyPrint = tt.prettyPrint
+			sortKeys = tt.sortKeys
 			result := processExpression(tt.expression)
 			if result != tt.expected {
 				t.Errorf("processExpression(%q) = %q, want %q", tt.expression, result, tt.expected)

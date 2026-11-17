@@ -49,13 +49,20 @@ expression and prints the result in sequence.`,
 }
 
 func processExpression(expression string) string {
-
-	if prettyPrint && expression == "" {
-		return yqlib.PrettyPrintExp
-	} else if prettyPrint {
-		return fmt.Sprintf("%v | %v", expression, yqlib.PrettyPrintExp)
+	if sortKeys {
+		expression = pipeInto(expression, sortKeysExp)
+	}
+	if prettyPrint {
+		expression = pipeInto(expression, yqlib.PrettyPrintExp)
 	}
 	return expression
+}
+
+func pipeInto(expression string, then string) string {
+	if expression == "" {
+		return then
+	}
+	return fmt.Sprintf("%v | %v", expression, then)
 }
 
 func evaluateSequence(cmd *cobra.Command, args []string) (cmdError error) {

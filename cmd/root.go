@@ -185,6 +185,7 @@ yq -P -oy sample.json
 	rootCmd.PersistentFlags().BoolVarP(&nulSepOutput, "nul-output", "0", false, "Use NUL char to separate values. If unwrap scalar is also set, fail if unwrapped scalar contains NUL char.")
 
 	rootCmd.PersistentFlags().BoolVarP(&prettyPrint, "prettyPrint", "P", false, "pretty print, shorthand for '... style = \"\"'")
+	rootCmd.PersistentFlags().BoolVarP(&sortKeys, "sort-keys", "S", false, "sort the keys of all maps, shorthand for appending '| sort_keys(..)' to the expression")
 	rootCmd.PersistentFlags().BoolVarP(&exitStatus, "exit-status", "e", false, "set exit status if there are no matches or null or false is returned")
 
 	rootCmd.PersistentFlags().BoolVarP(&forceColor, "colors", "C", false, "force print with colors")

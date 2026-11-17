@@ -21,6 +21,9 @@ var nulSepOutput = false
 var verbose = false
 var version = false
 var prettyPrint = false
+var sortKeys = false
+
+const sortKeysExp = "sort_keys(..)"
 
 var forceColor = false
 var forceNoColor = false

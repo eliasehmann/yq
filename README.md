@@ -439,6 +439,7 @@ Flags:
       --security-disable-env-ops        Disable env related operations.
       --security-disable-file-ops       Disable file related operations (e.g. load)
       --shell-key-separator string      separator for shell variable key paths (default "_")
+  -S, --sort-keys                       sort the keys of all maps, shorthand for appending '| sort_keys(..)' to the expression
   -s, --split-exp string                print each result (or doc) into a file named (exp). [exp] argument must return a string. You can use $index in the expression as the result counter. The necessary directories will be created. Paths must stay within the current directory unless --security-allow-write-any-path is set.
       --split-exp-file string           Use a file to specify the split-exp expression.
       --string-interpolation            Toggles strings interpolation of \(exp) (default true)
